@@ -2,12 +2,17 @@ import { useState } from "react";
 import { Center, Text, Icon } from "native-base"
 import { Fontisto } from '@expo/vector-icons';
 
+import { useAuth } from "../hooks/useAuth";
+
 import Logo from '../assets/logo.svg';
 import { Button } from "../components/Button";
 
 export function SignIn() {
 
+    const { user } = useAuth();
     const [isLoading, setIsLoading] = useState(false)
+
+    console.log(user)
 
     return (
         <Center flex={1} bgColor="gray.900" p={7}>
