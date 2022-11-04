@@ -9,10 +9,7 @@ import { Button } from "../components/Button";
 
 export function SignIn() {
 
-    const { user } = useAuth();
-    const [isLoading, setIsLoading] = useState(false)
-
-    console.log(user)
+    const { isUserLoading, signIn } = useAuth();
 
     return (
         <Center flex={1} bgColor="gray.900" p={7}>
@@ -20,11 +17,11 @@ export function SignIn() {
             <Button
                 title="ENTRAR COM GOOGLE"
                 type="SECONDARY"
-                isLoading={isLoading}
+                isLoading={isUserLoading}
                 mt={12}
                 leftIcon={<Icon as={Fontisto} name="google" color="white" size="md"/>
                 }
-                onTouchEndCapture={() => setIsLoading(!isLoading)}
+                onTouchEndCapture={signIn}
             />
 
             <Text
