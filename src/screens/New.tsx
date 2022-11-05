@@ -1,11 +1,53 @@
-import { Heading, VStack, Text } from "native-base";
-import { Header } from "../components/Header";
+import { Heading, VStack, Text, useToast } from "native-base";
+import { useState } from "react";
 
-import Logo from '../assets/logo.svg';
+import { api } from "../services/api";
+
+import { Header } from "../components/Header";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 
+import Logo from '../assets/logo.svg';
+
 export function New() {
+
+    const [ title, setTitle ] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const toast = useToast();
+
+    async function handlePollCreate() {
+        setIsLoading(true)
+        if (!title.trim()) {
+            return toast.show({
+                title: 'Informe um nome para o seu bolão',
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+        }
+
+        try {
+            setIsLoading(true)
+            await api.post('/polls', { title })
+
+            toast.show({
+                title: 'Bolão criado com sucesso!',
+                placement: 'top',
+                bgColor: 'green.500'
+            })
+            setTitle('')
+        } catch (error) { 
+            console.log(error);
+            toast.show({
+                title: 'Não foi possível criar o bolão',
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return (
         <VStack flex={1} bgColor="gray.900">
             <Header title="Criar novo bolão" />
@@ -20,10 +62,14 @@ export function New() {
                 <Input
                     mb={2}
                     placeholder="Qual nome do seu bolão?"
+                    onChangeText={setTitle}
+                    value={title}
                 />
 
                 <Button
                     title="CRIAR MEU BOLÃO"
+                    onPress={handlePollCreate}
+                    isLoading={isLoading}
                 />
 
                 <Text color="gray.200" fontSize="sm" textAlign="center" px={5} mt={4}>
