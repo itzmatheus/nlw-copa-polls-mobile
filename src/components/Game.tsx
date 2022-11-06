@@ -34,6 +34,7 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
   const { colors, sizes } = useTheme();
 
   const when = dayjs(data.date).locale(ptbr).format('DD [de] MMMM [de] YYYY [às] HH:00[h]');
+  const isGameStarted = new Date(data.date) > new Date();
 
   return (
     <VStack
@@ -59,6 +60,7 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
           code={data.firstTeamCountryCode}
           position="right"
           onChangeText={setFirstTeamPoints}
+          value={data.guess?.gameId ? `${data.guess.firstTeamPoints}` : '' }
         />
 
         <X color={colors.gray[300]} size={sizes[6]} />
@@ -67,11 +69,12 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
           code={data.secondTeamCountryCode}
           position="left"
           onChangeText={setSecondTeamPoints}
+          value={data.guess?.gameId ? `${data.guess.secondTeamPoints}` : '' }
         />
       </HStack>
 
       {
-        !data.guess &&
+        !data.guess && isGameStarted &&
         <Button size="xs" w="full" bgColor="green.500" mt={4} onPress={onGuessConfirm}>
           <HStack alignItems="center">
             <Text color="white" fontSize="xs" fontFamily="heading" mr={3}>
@@ -79,6 +82,17 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
             </Text>
 
             <Check color={colors.white} size={sizes[4]} />
+          </HStack>
+        </Button>
+      }
+
+      {
+        !data.guess && !isGameStarted &&
+        <Button size="xs" w="full" bgColor="gray.600" mt={4} onPress={onGuessConfirm}>
+          <HStack alignItems="center">
+            <Text color="gray.300" fontSize="xs" fontFamily="heading" mr={3}>
+              TEMPO ESGOTADO
+            </Text>
           </HStack>
         </Button>
       }

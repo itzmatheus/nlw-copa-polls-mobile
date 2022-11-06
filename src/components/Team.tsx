@@ -7,21 +7,20 @@ interface Props {
   code: string;
   position: 'left' | 'right';
   onChangeText: (value: string) => void;
+  value? :string;
 }
 
-export function Team({ code, position, onChangeText }: Props) {
+export function Team({ code, position, onChangeText, value = ''}: Props) {
   return (
     <HStack alignItems="center">
       {position === 'left' && <CountryFlag isoCode={code} size={25} style={{ marginRight: 12 }} />}
 
-      <Input
-        w={10}
-        h={9}
-        textAlign="center"
-        fontSize="xs"
-        keyboardType="numeric"
-        onChangeText={onChangeText}
-      />
+      {
+        value === '' ?
+        <Input w={10} h={9} textAlign="center" fontSize="xs" keyboardType="numeric" onChangeText={onChangeText} />
+        :
+        <Input w={10} h={9} textAlign="center" fontSize="xs" keyboardType="numeric" onChangeText={onChangeText} value={value} isReadOnly={true} />
+      }
 
       {position === 'right' && <CountryFlag isoCode={code} size={25} style={{ marginLeft: 12 }} />}
     </HStack>
