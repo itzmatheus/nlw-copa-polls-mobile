@@ -10,6 +10,7 @@ import { EmptyMyPollList } from "../components/EmptyMyPollList";
 
 import { api } from "../services/api";
 import { Option } from "../components/Option";
+import { Guesses } from "../components/Guesses";
 
 interface RouteParams {
     id: string;
@@ -34,12 +35,12 @@ export function Details() {
             setPollDetails(responseDetails.data.poll)
 
         } catch (error) {
-            console.log(error)
+            console.log(error);
             toast.show({
                 title: 'Não foi possivel carregar os dados do bolão!',
                 placement: 'top',
                 bgColor: 'red.500',
-            })
+            });
         } finally {
             setIsLoading(false);
         }
@@ -85,6 +86,9 @@ export function Details() {
                             onPress={() => setOptionSelected("ranking")}
                         />
                     </HStack>
+                    <Guesses
+                        pollId={pollDetails.id}
+                    />
 
                 </VStack>: <EmptyMyPollList onShare={handleCodeShare} code={pollDetails.code} />
             }
