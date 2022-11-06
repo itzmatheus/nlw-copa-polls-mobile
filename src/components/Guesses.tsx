@@ -105,7 +105,8 @@ export function Guesses({ pollId, code }: Props) {
           ListEmptyComponent={() => (
             <EmptyMyPollList code={code} onShare={handleCodeShare} />
           )}
-        />
+          _contentContainerStyle={{ pb: 50 }}
+          />
     </Box>
   );
 }
