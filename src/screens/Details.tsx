@@ -88,6 +88,7 @@ export function Details() {
                     </HStack>
                     <Guesses
                         pollId={pollDetails.id}
+                        code={pollDetails.code}
                     />
 
                 </VStack>: <EmptyMyPollList onShare={handleCodeShare} code={pollDetails.code} />

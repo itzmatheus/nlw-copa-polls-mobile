@@ -6,12 +6,15 @@ import { api } from '../services/api';
 
 import { GameProps, Game } from '../components/Game';
 import { Loading } from './Loading';
+import { EmptyMyPollList } from './EmptyMyPollList';
+import { Share } from 'react-native';
 
 interface Props {
   pollId: string;
+  code: string;
 }
 
-export function Guesses({ pollId }: Props) {
+export function Guesses({ pollId, code }: Props) {
 
   const toast = useToast();
 
@@ -72,6 +75,12 @@ export function Guesses({ pollId }: Props) {
     }
   }
 
+  async function handleCodeShare() {
+    await Share.share({
+        message: code,
+    })
+}
+
   useFocusEffect(useCallback(() => {
     fetchGames();
   }, [pollId]));
@@ -92,6 +101,9 @@ export function Guesses({ pollId }: Props) {
               setSecondTeamPoints={setSecondTeamPoints}
               onGuessConfirm={() => handleGuessConfirm(item.id)}
             /> 
+          )}
+          ListEmptyComponent={() => (
+            <EmptyMyPollList code={code} onShare={handleCodeShare} />
           )}
         />
     </Box>
